@@ -13,20 +13,23 @@ namespace MarkItDown
       Given input README.md, it will create and overwrite README.html
 
       Usage:
-        MarkItDown.exe [-v | --verbose] FILES ... 
-        MarkItDown.exe (-h | --help)
+        MarkItDown.exe [-v] [-t TEMPLATE] FILES ... 
+        MarkItDown.exe -h | --help
         MarkItDown.exe --version
 
       Options:
-        FILES         Markdown files to be converted to HTML
-        -h --help     Show this screen
-        -v --verbose  Show more detail for errors
-        --version     Show version
+        FILES           Markdown files to be converted to HTML
+        -t --template   Template HTML file to use (the token {{ MarkItHere }} 
+                        will be replaced with Markdown)
+        -v --verbose    Show more detail for errors
+        -h --help       Show this screen
+        --version       Show version
         
       ";
 
     static void Main(string[] args)
     {
+      string templateHtml = null;
       var verbose = false;
 
       try
@@ -40,6 +43,13 @@ namespace MarkItDown
           return;
         }
 
+        if (arguments["--template"] != null)
+        {
+          var templateFilename = arguments["--template"].ToString();
+          var templatePath = Path.GetFullPath(templateFilename);
+          templateHtml = File.ReadAllText(templatePath);
+        }
+
         var md = new Markdown();
         var fileNames = arguments["FILES"].AsList;
 
@@ -49,7 +59,12 @@ namespace MarkItDown
           var markdown = File.ReadAllText(inputPath);
           var html = md.Transform(markdown);
           var outPath = GetOutputPath(inputPath);
-          File.WriteAllText(outPath, html);
+
+          if (templateHtml != null)
+          {
+            html = templateHtml.Replace("{{ MarkItHere }}", html);
+          }
+          File.WriteAllText(outPath, html);  
         }
       }
       catch (Exception ex)

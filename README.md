@@ -18,21 +18,22 @@ Here's the doc string you'll get if you invoke MarkItDown with the `-h` option:
     Given input README.md, it will create and overwrite README.html
 
     Usage:
-      MarkItDown.exe [-v | --verbose] FILES ... 
-      MarkItDown.exe (-h | --help)
+      MarkItDown.exe [-v] [-t TEMPLATE] FILES ... 
+      MarkItDown.exe -h | --help
       MarkItDown.exe --version
 
     Options:
-      FILES         Markdown files to be converted to HTML
-      -h --help     Show this screen
-      -v --verbose  Show more detail for errors
-      --version     Show version
+      FILES           Markdown files to be converted to HTML
+      -t --template   Template HTML file to use (the token {{ MarkItHere }} 
+                      will be replaced with the Markdown generated)
+      -v --verbose    Show more detail for errors
+      -h --help       Show this screen
+      --version       Show version
       
-*Note:* The HTML files generated are not complete HTML documents.
-Rather, they are HTML snippets that you might put inside the `<body>` tag
-of an HTML document. (Providing a way to use a template file where we'd
-substitute the HTML generated would be a neat addition to this project.
-Feel free to submit a pull request!)
+*Note:* The HTML generated is not a complete HTML document. Rather, it is
+a HTML snippet you might put inside the `<body>` tag of an HTML document. You
+can use a template file with the token `{{ MarkItHere }}` to create full HTML
+documents. The token will be replaced with the HTML generated for the Markdown.
 
 Dependencies
 ------------
@@ -52,6 +53,9 @@ Change Log
 
 MarkItDown uses [semantic versioning](http://semver.org/).
 
+- 1.1.0.0
+  - Added an option that lets you provide a template to insert the generated
+    Markdown into.
 - 1.0.0.0
   - Initial release
 
