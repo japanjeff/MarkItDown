@@ -18,12 +18,12 @@ namespace MarkItDown
         MarkItDown.exe --version
 
       Options:
-        FILES           Markdown files to be converted to HTML
-        -t --template   Template HTML file to use (the token {{ MarkItHere }} 
-                        will be replaced with Markdown)
-        -v --verbose    Show more detail for errors
-        -h --help       Show this screen
-        --version       Show version
+        FILES                   Markdown files to be converted to HTML
+        -t --template TEMPLATE  Template HTML file to use (will replace 
+                                the token {{ MarkItHere }} with Markdown)
+        -v --verbose            Show more detail for errors
+        -h --help               Show this screen and exit
+        --version               Show version and exit
         
       ";
 

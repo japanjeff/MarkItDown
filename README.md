@@ -23,13 +23,13 @@ Here's the doc string you'll get if you invoke MarkItDown with the `-h` option:
       MarkItDown.exe --version
 
     Options:
-      FILES           Markdown files to be converted to HTML
-      -t --template   Template HTML file to use (the token {{ MarkItHere }} 
-                      will be replaced with the Markdown generated)
-      -v --verbose    Show more detail for errors
-      -h --help       Show this screen
-      --version       Show version
-      
+      FILES                   Markdown files to be converted to HTML
+      -t --template TEMPLATE  Template HTML file to use (will replace 
+                              the token {{ MarkItHere }} with Markdown)
+      -v --verbose            Show more detail for errors
+      -h --help               Show this screen and exit
+      --version               Show version and exit
+
 *Note:* The HTML generated is not a complete HTML document. Rather, it is
 a HTML snippet you might put inside the `<body>` tag of an HTML document. You
 can use a template file with the token `{{ MarkItHere }}` to create full HTML
@@ -53,13 +53,16 @@ Change Log
 
 MarkItDown uses [semantic versioning](http://semver.org/).
 
-- 1.1.0.0
-  - Added an option that lets you provide a template to insert the generated
+- 1.1.1.0 - Fixed a bug where putting `-t TEMPLATE` at the end caused unexpected
+    behavior. Switched from MIT License to Unlicensed.
+- 1.1.0.0 - Added an option that lets you provide a template to insert the generated
     Markdown into.
-- 1.0.0.0
-  - Initial release
+- 1.0.0.0 - Initial release
 
 License
 -------
 
-This software is released under the MIT License. See `LICENSE-MIT` for details.
+This is free and unencumbered software released into the public domain.
+See the file `UNLICENSE` for details.
+
+[http://unlicense.org/](http://unlicense.org/)
