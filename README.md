@@ -12,6 +12,10 @@ Markdown files as command line arguments. The example below will produce
 
     > MarkItDown.exe README.md examples.md
 
+To process all the Markdown files in a directory you can do:
+
+    > MarkItDown.exe *.md
+
 Here's the doc string you'll get if you invoke MarkItDown with the `-h` option:
 
     Generates HTML files based on the contents of the Markdown files provided
@@ -24,6 +28,7 @@ Here's the doc string you'll get if you invoke MarkItDown with the `-h` option:
 
     Options:
       FILES                   Markdown files to be converted to HTML
+                              (File globs using */? also accepted)
       -t --template TEMPLATE  Template HTML file to use (will replace 
                               the token {{ MarkItHere }} with Markdown)
       -v --verbose            Show more detail for errors
@@ -43,7 +48,7 @@ Most of the work is done by the awesome packages listed below.
 These are installed using NuGet so if you have NuGet setup to download missing
 packages, it should automatically fetch them for you. Even without NuGet,
 it should build with msbuild if you set the environment variable
-'EnableNuGetPackageRestore' to 'true'.
+`EnableNuGetPackageRestore` to `true`.
 
 - [MarkdownSharp](https://code.google.com/p/markdownsharp/)
 - [docopt.net](https://github.com/docopt/docopt.net)
@@ -53,6 +58,7 @@ Change Log
 
 MarkItDown uses [semantic versioning](http://semver.org/).
 
+- 1.2.0.0 - Added ability to glob files. More output for `--verbose` option.
 - 1.1.1.0 - Fixed a bug where putting `-t TEMPLATE` at the end caused unexpected
     behavior. Switched from MIT License to Unlicensed.
 - 1.1.0.0 - Added an option that lets you provide a template to insert the generated

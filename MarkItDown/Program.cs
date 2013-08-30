@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using DocoptNet;
 using MarkdownSharp;
@@ -19,6 +21,7 @@ namespace MarkItDown
 
       Options:
         FILES                   Markdown files to be converted to HTML
+                                (File globs using */? also accepted)
         -t --template TEMPLATE  Template HTML file to use (will replace 
                                 the token {{ MarkItHere }} with Markdown)
         -v --verbose            Show more detail for errors
@@ -48,17 +51,19 @@ namespace MarkItDown
           var templateFilename = arguments["--template"].ToString();
           var templatePath = Path.GetFullPath(templateFilename);
           templateHtml = File.ReadAllText(templatePath);
+          if (verbose) Console.WriteLine("Using template " + templatePath);
         }
 
         var md = new Markdown();
-        var fileNames = arguments["FILES"].AsList;
+        var paths = arguments["FILES"].AsList.ToArray();
+        var files = paths.SelectMany(x => GlobFiles(x.ToString()));
 
-        foreach (var fileName in fileNames)
+        foreach (var fileName in files)
         {
-          var inputPath = Path.GetFullPath(fileName.ToString());
-          var markdown = File.ReadAllText(inputPath);
+          if(verbose) Console.WriteLine("Processing " + fileName);
+          var markdown = File.ReadAllText(fileName);
           var html = md.Transform(markdown);
-          var outPath = GetOutputPath(inputPath);
+          var outPath = GetOutputPath(fileName);
 
           if (templateHtml != null)
           {
@@ -77,7 +82,29 @@ namespace MarkItDown
     {
       var baseName = Path.GetFileNameWithoutExtension(inputPath);
       var directory = Path.GetDirectoryName(inputPath);
-      return Path.Combine(directory, baseName + ".html");
+      return Path.Combine(directory ?? "", baseName + ".html");
+    }
+
+    /// <remarks>
+    /// Based on http://stackoverflow.com/a/7619345/945456
+    /// and http://stackoverflow.com/q/15961648/945456
+    /// </remarks>
+    private static IEnumerable<String> GlobFiles(string path)
+    {
+      string directory = Path.GetDirectoryName(path);
+      string filePattern = Path.GetFileName(path) ?? "";
+
+      if (String.IsNullOrEmpty(directory))
+        directory = Directory.GetCurrentDirectory();
+
+      directory = Path.GetFullPath(directory);
+
+      if (!Directory.Exists(directory))
+        return Enumerable.Empty<String>();
+
+      var extension = Path.GetExtension(filePattern) ?? "";
+      return Directory.EnumerateFiles(directory, filePattern)
+        .Where(x => x.EndsWith(extension));
     }
   }
 }
